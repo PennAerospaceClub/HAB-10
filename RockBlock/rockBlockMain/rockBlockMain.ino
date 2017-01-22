@@ -1,16 +1,18 @@
+#include <QueueArray.h>
 #include <IridiumSBD.h>
 #include <SoftwareSerial.h>
+#include "Message.cpp"
+
 int rxPin = 10;
 int txPin = 11;
 int sleepPin = 8;
-
+QueueArray<Message> recMsgs;
+ 
 SoftwareSerial nss(rxPin, txPin);
 IridiumSBD isbd(nss, sleepPin);
 
 void setup()
 {
-//  pinMode(8, OUTPUT);
-//  digitalWrite(8, HIGH);
   int signalQuality = -1;
 
   Serial.begin(115200);
@@ -30,19 +32,13 @@ void setup()
 
   Serial.print("Signal quality is ");
   Serial.println(signalQuality);
-
   err = isbd.sendSBDText("Hello, world!");
-  Serial.println("*" + err);
   if (err != 0)
   {
-    Serial.println("WTF1");
     Serial.print("sendSBDText failed: error ");
     Serial.println(err);
-    Serial.println("WTF2");
     return;
   }
-  Serial.println("WTF3");
-
   Serial.println("Hey, it worked!");
   Serial.print("Messages left: ");
   Serial.println(isbd.getWaitingMessageCount());
@@ -53,7 +49,9 @@ void loop()
 
 }
 
+
 bool ISBDCallback()
 {
    return true;
 }
+
