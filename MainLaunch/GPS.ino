@@ -3,6 +3,7 @@
 void readGPS(){
   boolean gooddata = false;
   int gpsMaxSearchTime = millis() + 5000;
+  String field = "";
   while(!gooddata){
     while(Serial1.available() && gpsMaxSearchTime > millis()){
       if((char)Serial1.read() == '$'){
@@ -41,7 +42,7 @@ void readGPS(){
           
           String salt = field.substring(index1 + 1, index2);
   
-          lat = slat.toInt();
+          lat = salt.toInt();
           longit = slongit.toInt();
           alt = salt.toInt();
           
