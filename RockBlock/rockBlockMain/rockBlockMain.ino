@@ -1,9 +1,11 @@
 #include <IridiumSBD.h>
 #include <SoftwareSerial.h>
+int rxPin = 10;
+int txPin = 11;
+int sleepPin = 8;
 
-//SoftwareSerial nss(5, 1);
-SoftwareSerial nss(10, 11);
-IridiumSBD isbd(nss, 8);
+SoftwareSerial nss(rxPin, txPin);
+IridiumSBD isbd(nss, sleepPin);
 
 void setup()
 {
