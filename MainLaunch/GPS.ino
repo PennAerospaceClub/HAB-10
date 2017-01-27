@@ -19,32 +19,38 @@ void readGPS(){
           //Serial.println(field);
           gooddata = true;
   
-          int index1 = field.indexOf(",");
-          index1 = field.indexOf(",", index1 + 1);
-          int index2 = field.indexOf(",", index1 + 1);
+          int index1 = 0;
+          int index2 = 0;
           
-          String slat = field.substring(index1 + 1, index2);
-          slat.remove(4, 1);
-  
-          index1 = index2;
-          index1 = field.indexOf(",", index1 + 1);
+          //gpgga,time,latitude,longitude,fixquality,numsats,dilut,altitude,stuff,stuff,checksum
+          //time//
+          index1 = field.indexOf(",");
           index2 = field.indexOf(",", index1 + 1);
-  
-          String slongit = field.substring(index1 + 1, index2);
-          slongit.remove(0, 1); slongit.remove(4, 1);
-  
+          gpstime = field.substring(index1 + 1, index2).toInt();
           index1 = index2;
-          index1 = field.indexOf(",", index1 + 1);
-          index1 = field.indexOf(",", index1 + 1);
-          index1 = field.indexOf(",", index1 + 1);
-          index1 = field.indexOf(",", index1 + 1);
-          index2 = field.indexOf(".", index1 + 1);
-          
-          String salt = field.substring(index1 + 1, index2);
-  
-          lat = salt.toInt();
-          longit = slongit.toInt();
-          alt = salt.toInt();
+          //latitude//
+          index2 = field.indexOf(",", index1 + 1);
+          lat = field.substring(index1 + 1, index2).toInt();
+          index1 = index2;
+          //longitude//
+          index2 = field.indexOf(",", index1 + 1);
+          longit = field.substring(index1 + 1, index2).toInt();
+          index1 = index2;
+          //skip//
+          index2 = field.indexOf(",", index1 + 1);
+          index1 = index2;
+          //numsats//
+          index2 = field.indexOf(",", index1 + 1);
+          numsats = field.substring(index1 + 1, index2).toInt();
+          index1 = index2;
+          //skip//
+          index2 = field.indexOf(",", index1 + 1);
+          index1 = index2;
+          //altitude//
+          index2 = field.indexOf(",", index1 + 1);
+          alt = field.substring(index1 + 1, index2).toInt();
+          index1 = index2;
+          field = "";
           
           field = "";
         }
