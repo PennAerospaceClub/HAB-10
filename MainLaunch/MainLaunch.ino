@@ -11,11 +11,12 @@ Adafruit_9DOF                dof   = Adafruit_9DOF();
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 
-int lat = -1;
-int longit = -1;
-int alt = -1;
-int gpstime = -1;
-int numsats = -1; 
+long int lat = -1;
+long int longit = -1;
+long int alt = -1;
+long int gpstime = -1;
+long int numsats = -1; 
+String dataString;
 
 
 const int chipSelect = 53;
@@ -31,7 +32,7 @@ boolean sane = false;
 
 void setup() {
   Serial.begin(9600);
-  Serial2.begin(9600);
+  Serial1.begin(9600);
   delay(10);  
 }
 
@@ -40,5 +41,11 @@ void loop() {
     sanity();
   }
   readIMU();
+  readGPS();
+  dataString = (String)yaw + ","+ (String)pitch+ "," +(String)roll+ "," +
+  (String)lat + "," + (String)longit + "," + (String)alt + "," + (String)gpstime + "," 
+  + (String)numsats;
+  writeSD(dataString);
+
    
 }
