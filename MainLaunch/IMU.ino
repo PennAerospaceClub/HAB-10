@@ -31,13 +31,13 @@ void readIMU(){
   pitch = orientation.pitch;
   roll = orientation.roll;
     /* 'orientation' should have valid .roll and .pitch fields */
-    Serial.print(F("Orientation: "));
-    Serial.print(roll);
-    Serial.print(F(" "));
-    Serial.print(pitch);
-    Serial.print(F(" "));
-    Serial.print(yaw);
-    Serial.println(F(""));
+//    Serial.print(F("Orientation: "));
+//    Serial.print(roll);
+//    Serial.print(F(" "));
+//    Serial.print(pitch);
+//    Serial.print(F(" "));
+//    Serial.print(yaw);
+//    Serial.println(F(""));
   }
 }
 
