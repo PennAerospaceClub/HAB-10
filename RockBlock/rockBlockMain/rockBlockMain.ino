@@ -19,6 +19,9 @@ uint8_t buffer[200];
 void setup()
 {
 
+  //RockBlock signal quality can range from 0-5.. 
+  //should NOT try to send a message if the signal quality is not 
+  //at least 1. 
   int signalQuality = -1;
 
   Serial.begin(115200);
@@ -28,13 +31,19 @@ void setup()
   isbd.setPowerProfile(1);
   isbd.begin();
 
-//  int err = isbd.getSignalQuality(signalQuality);
+  //take a look at the code below for reference of checking signal quality 
+  int err = isbd.getSignalQuality(signalQuality);
 //  if (err != 0)
 //  {
 //    Serial.print("SignalQuality failed: error ");
 //    Serial.println(err);
 //    return;
 //  }
+
+
+// *************************************** //
+//BELOW IS OLD CODE, USELESS, BUT FEEL FREE TO USE AS REFERNCE
+
 
 //  Serial.print("Signal quality is ");
 //  Serial.println(signalQuality);
@@ -49,8 +58,11 @@ void setup()
 //  Serial.println("Hey, it worked!");
 //  Serial.print("Messages left: ");
 //  Serial.println(isbd.getWaitingMessageCount());
+
+//*************************************************//
 }
 
+//requires a Message object. Reger to the message class
 void sendMessage(Message m) 
 {
   //Converts the Message class array 'message' into the required buffer format. 
@@ -70,6 +82,8 @@ void sendMessage(Message m)
   {
     Serial.print("Error: "); Serial.println(error);  
   }
+  //add the message to the queue of sent msgs. 
+  addMessageToSentQueue(m);
   //create a new empty char array that will be used to create the recv Message obj
   char recvMsg[200];
   //timestamp (epoch timestamp)
@@ -88,11 +102,13 @@ void sendMessage(Message m)
   addMessageToRecvQueue(newMsg);
 }
 
+//adds message to the queue of received messages
 void addMessageToRecvQueue(Message m) 
 {
   recMsgs.push(m);
 }
 
+//adds message to the queue of sent messages
 void addMessageToSentQueue(Message m) 
 {
   sentMsgs.push(m);
