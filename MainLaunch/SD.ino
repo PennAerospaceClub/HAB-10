@@ -9,7 +9,7 @@ void writeSD(String dataString){
     dataFile.println(dataString);
     dataFile.flush();
     // print to the serial port too:
-    Serial.println(dataString);
+    //Serial.println(dataString);
   }
   // if the file isn't open, pop up an error:
   else {

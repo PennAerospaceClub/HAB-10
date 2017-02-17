@@ -34,8 +34,4 @@ static void testMessageClass()
   assert(m->type == RCV);
 }
 
-int main() 
-{
-    testMessageClass();
-}
 

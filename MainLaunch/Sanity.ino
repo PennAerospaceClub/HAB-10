@@ -18,7 +18,10 @@ void sanity(){
       Serial.println("IMU failed");
     }
   }
-  
+
+//  if(!Serial1.available()){
+//    Serial.println("gps sending no data");
+//  }
 
   sane = imu && sd;
 }
