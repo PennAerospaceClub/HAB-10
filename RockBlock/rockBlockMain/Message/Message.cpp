@@ -23,19 +23,19 @@ Message::Message (int ts, char msg[], MSG_TYPE mt)
 }
 
 //Below are the test for constructor of Message class. Errors are thrown if any tests fail.
-static void testMessageClass()
-{
-  Message* m = new Message(1485717297, "TEST", RCV);
-  assert(m->timestamp == 1485717297);
-  assert(m->message[0] == 'T');
-  assert(m->message[1] == 'E');
-  assert(m->message[2] == 'S');
-  assert(m->message[3] == 'T');
-  assert(m->type == RCV);
-}
+// static void testMessageClass()
+// {
+//   Message* m = new Message(1485717297, "TEST", RCV);
+//   assert(m->timestamp == 1485717297);
+//   assert(m->message[0] == 'T');
+//   assert(m->message[1] == 'E');
+//   assert(m->message[2] == 'S');
+//   assert(m->message[3] == 'T');
+//   assert(m->type == RCV);
+// }
 
-int main() 
-{
-    testMessageClass();
-}
+// int main() 
+// {
+//     // testMessageClass();
+// }
 
