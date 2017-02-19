@@ -1,3 +1,4 @@
+#include <TinyGPS++.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_LSM303_U.h>
@@ -11,13 +12,14 @@ Adafruit_9DOF                dof   = Adafruit_9DOF();
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(30301);
 Adafruit_LSM303_Mag_Unified   mag   = Adafruit_LSM303_Mag_Unified(30302);
 
-long int lat = -1;
+long int latit = -1;
 long int longit = -1;
 long int alt = -1;
 long int gpstime = -1;
 long int numsats = -1; 
 String dataString;
 
+TinyGPSPlus gps;
 
 const int chipSelect = 53;
 
@@ -29,6 +31,7 @@ float roll;
 boolean sd = false;  
 boolean imu = false;
 boolean sane = false;
+boolean gpsworking = false;
 
 void setup() {
   Serial.begin(9600);
@@ -43,7 +46,7 @@ void loop() {
   readIMU();
   readGPS();
   dataString = (String)yaw + ","+ (String)pitch+ "," +(String)roll+ "," +
-  (String)lat + "," + (String)longit + "," + (String)alt + "," + (String)gpstime + "," 
+  (String)latit + "," + (String)longit + "," + (String)alt + "," + (String)gpstime + "," 
   + (String)numsats;
   writeSD(dataString);
 
