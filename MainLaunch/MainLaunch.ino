@@ -59,19 +59,14 @@ boolean rockb = false;
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
-<<<<<<< Updated upstream
-  delay(10); 
-
+  
    //Rockblock initialization
 //  nss.begin(19200);
 //
 //  isbd.attachConsole(Serial);
 //  isbd.setPowerProfile(0);
 //  isbd.begin();
-=======
-<<<<<<< Updated upstream
-  delay(10);  
-=======
+
   delay(10); 
 
   //Rockblock initialization
@@ -80,8 +75,6 @@ void setup() {
   isbd.attachConsole(Serial);
   isbd.setPowerProfile(0);
   isbd.begin();
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 }
 
 void loop() {
@@ -95,17 +88,10 @@ void loop() {
   + (String)numsats;
   writeSD(dataString);
 
-<<<<<<< Updated upstream
   Message* sendm = new Message(14857, "TEST", RCV);
   Serial.print("Message timestamp: ");
   Serial.println(sendm -> timestamp);
-=======
-<<<<<<< Updated upstream
-   
-=======
 //  Message* sendm = new Message(14857, "TEST", RCV);
 //  Serial.print("Message timestamp: ");
 //  Serial.println(sendm -> timestamp);
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 }
