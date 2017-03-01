@@ -20,7 +20,6 @@ void sanity(){
     }
   }
 
-<<<<<<< Updated upstream
   //RockBlock Sanity
 //  int err = isbd.getSignalQuality(signalQuality);
 //  if (!rockb){
@@ -33,11 +32,8 @@ void sanity(){
 //    Serial.print("RockBlock signal quality is ");
 //    Serial.println(signalQuality);
 //  }
-=======
-<<<<<<< Updated upstream
   //  if(!Serial1.available()){
 //    Serial.println("gps sending no data");
->>>>>>> Stashed changes
 //  }
 
   if(!Serial1.available()){
@@ -45,7 +41,6 @@ void sanity(){
    }
 
   sane = imu && sd;
-=======
   //RockBlock Sanity
   int err = isbd.getSignalQuality(signalQuality);
   if (!rockb){
@@ -65,6 +60,5 @@ void sanity(){
    }
 
   sane = imu && sd&&rockb;
->>>>>>> Stashed changes
 }
 
