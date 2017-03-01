@@ -65,7 +65,7 @@ void setup()
   //*************************************************//
 }
 
-//requires a Message object. Reger to the message class
+//requires a Message object. Refer to the message class
 void sendMessage(Message m)
 {
   //Converts the Message class array 'message' into the required buffer format.

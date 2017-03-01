@@ -20,24 +20,25 @@ void sanity(){
     }
   }
 
+
   //RockBlock Sanity
-//  int err = isbd.getSignalQuality(signalQuality);
-//  if (!rockb){
-//  if ( err != 0)
-//  {
-//    Serial.print("RockBlock SignalQuality failed: error ");
-//    Serial.println(err);
-//  }else{
-//    rockb = true;
-//    Serial.print("RockBlock signal quality is ");
-//    Serial.println(signalQuality);
-//  }
-//  }
+  int err = isbd.getSignalQuality(signalQuality);
+  if (!rockb){
+  if ( err != 0)
+  {
+    Serial.print("RockBlock SignalQuality failed: error ");
+    Serial.println(err);
+  }else{
+    rockb = true;
+    Serial.print("RockBlock signal quality is ");
+    Serial.println(signalQuality);
+  }
+  }
 
   if(!Serial1.available()){
    Serial.println("gps sending no data");
    }
 
-  sane = imu && sd;
+  sane = imu && sd&&rockb;
 }
 

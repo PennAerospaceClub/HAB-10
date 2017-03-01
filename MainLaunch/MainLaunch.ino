@@ -59,14 +59,15 @@ boolean rockb = false;
 void setup() {
   Serial.begin(9600);
   Serial1.begin(9600);
+
   delay(10); 
 
-   //Rockblock initialization
-//  nss.begin(19200);
-//
-//  isbd.attachConsole(Serial);
-//  isbd.setPowerProfile(0);
-//  isbd.begin();
+  //Rockblock initialization
+  nss.begin(19200);
+
+  isbd.attachConsole(Serial);
+  isbd.setPowerProfile(0);
+  isbd.begin();
 }
 
 void loop() {
@@ -80,7 +81,9 @@ void loop() {
   + (String)numsats;
   writeSD(dataString);
 
-  Message* sendm = new Message(14857, "TEST", RCV);
-  Serial.print("Message timestamp: ");
-  Serial.println(sendm -> timestamp);
+
+//  Message* sendm = new Message(14857, "TEST", RCV);
+//  Serial.print("Message timestamp: ");
+//  Serial.println(sendm -> timestamp);
+
 }
