@@ -100,8 +100,7 @@ Mb = 4.0026; %This is the molecular weight of the balloon gas (Helium)
 p = 2118.145;%This is the inital atmospheric pressure (lb/ft^2)
 temp = 59; %This is the initial temperature
 tempR = temp + 460; % This is the temperature in degrees Rankine
-RhoA = p/(1718*(temp+459.7)); %This is the density of air (lb/ft^3)
-Wg = Mb*p*vol/(r*tempR);
+Wg = Mb*p*vol/(r*tempR)*32.2; % Weight in pounds of gas
 Wf = BMass*0.00220462; % This is the weight of the balloon in pounds
 Wp = PMass*0.00220462; % This is the weight of the payload in pounds
 cb = 0.55; % This is the apparent additional mass coefficient for balloons based on a study from UMich in 1995
@@ -110,6 +109,8 @@ dt = 1;
 radius = ((3/(4*pi))*vol)^(1/3);
 
 alt_array = zeros(10800);
+
+first_pass = 0; %Boolean denoting the first pass of venting altitude
 
 for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
     oldTemp = temp;
@@ -129,7 +130,16 @@ for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
         tempR = temp + 460;
         p = 51.97 * ((temp+459.7)/389.98)^-11.388;
     end
-
+    
+    
+    if first_pass == 0 && alt > 45000 
+        first_pass = 1;
+        pg = (Mb/Wg)*r*tempR;
+        RhoG = Wg/vol; % density of gas
+        vg = sqrt(2*(pa-pg)/RhoG); % velocity of effusion
+        eVol = vg;
+        
+    
     dTemp = abs(temp - oldTemp);
     dTempR = abs(tempR - oldTempR); 
     
@@ -150,7 +160,7 @@ for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
     
     oldAlt = alt;
     
-    if C >= 0 %The gross lift must be positive or the  balloon will not rise
+    if C >= 0 %The gross lift must be positive or the balloon will not rise
         alt = constant + sqrt(C/B) * (t + (A*log(1 + exp((C/A)*(sqrt(C*B))*(t))))/sqrt(C*B)); %This is the simplified solution provided by Wolfram mathematica
         alt_array(t) = alt; 
     else alt_array(t) = -1; 
@@ -160,7 +170,7 @@ for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
     
     dVol= (r/(p*Mb))*(Wg*dTempR/dt)*dt + (RhoA/p)*(vol)*dalt;
     
-    vol = vol + dVol; 
+    vol = vol + dVol - eVol; %eVol volume out during venting 
 end
 end
         
