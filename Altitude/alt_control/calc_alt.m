@@ -35,7 +35,7 @@
 %Solved to: z(t) = sqrt(C/B) * (-t + Alog(1 +
 %e^((C/A)*(sqrt(C*B))*(t-A*c1))
 
-function [alt_array] = calc_alt(BMass,PMass,GVol)
+function [alt_array, vol_array] = calc_alt(BMass,PMass,GVol)
 
 bd = [3.0,4.5,5.9,6.9,7.7]; %this is an array of burst diameters (in meters) based on the averages from various balloon manufacturer websites
 cd = [0.25,0.25,0.3,0.3,0.3]; %this is an array of various drag coefficients based on averages from various balloon manufacturers. Each entry is the value of the corresponding balloon mass.  
@@ -100,15 +100,17 @@ Mb = 4.0026; %This is the molecular weight of the balloon gas (Helium)
 p = 2118.145;%This is the inital atmospheric pressure (lb/ft^2)
 temp = 59; %This is the initial temperature
 tempR = temp + 460; % This is the temperature in degrees Rankine
-Wg = Mb*p*vol/(r*tempR)*32.2; % Weight in pounds of gas
+Wg = Mb*p*vol/(r*tempR); % Weight in pounds of gas
 Wf = BMass*0.00220462; % This is the weight of the balloon in pounds
 Wp = PMass*0.00220462; % This is the weight of the payload in pounds
 cb = 0.55; % This is the apparent additional mass coefficient for balloons based on a study from UMich in 1995
 g = 32.2; % acceleration caused by gravity (ft/sec^2)
 dt = 1;
+eVol = 0; % no gas being initially effused
 radius = ((3/(4*pi))*vol)^(1/3);
 
-alt_array = zeros(10800);
+alt_array = zeros(10800,1);
+vol_array = zeros(10800,1);
 
 first_pass = 0; %Boolean denoting the first pass of venting altitude
 
@@ -131,21 +133,20 @@ for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
         p = 51.97 * ((temp+459.7)/389.98)^-11.388;
     end
     
-    
-    if first_pass == 0 && alt > 45000 
-        first_pass = 1;
-        pg = (Mb/Wg)*r*tempR;
-        RhoG = Wg/vol; % density of gas
-        vg = sqrt(2*(pa-pg)/RhoG); % velocity of effusion
-        eVol = vg;
-        
-    
     dTemp = abs(temp - oldTemp);
     dTempR = abs(tempR - oldTempR); 
     
     RhoA = (p/(1718*(temp+459.7)))*32.174; %This is the density of air which needs to be updated. 32.174 is the conversion factor between slugs and lbs.
 
     Wg = Mb*p*vol/(r*tempR); %The weight of the gas has to be updated for the new temperature
+    
+    if alt > 45000 
+        first_pass = 1;
+        pg = (Mb/Wg)*r*tempR; % pressure of gas has been modified using 'proper' gravitational constant
+        RhoG = Wg/vol; % density of gas (same conversion)
+        vg = sqrt(2*((p*32.2)-pg)/RhoG); % velocity of effusion
+        eVol = vg;
+    end
     
     radius = ((3/(4*pi))*vol)^(1/3);
     Ca = pi*radius^2;   
@@ -162,15 +163,16 @@ for t = 1:1:10800 %Max ascent time most likely will not exceed 3 hours
     
     if C >= 0 %The gross lift must be positive or the balloon will not rise
         alt = constant + sqrt(C/B) * (t + (A*log(1 + exp((C/A)*(sqrt(C*B))*(t))))/sqrt(C*B)); %This is the simplified solution provided by Wolfram mathematica
-        alt_array(t) = alt; 
-    else alt_array(t) = -1; 
+        alt_array(t,1) = alt; 
+    else alt_array(t,1) = -1; 
     end
     
     dalt = alt - oldAlt; %this is the change in altitude from the last second
     
     dVol= (r/(p*Mb))*(Wg*dTempR/dt)*dt + (RhoA/p)*(vol)*dalt;
     
-    vol = vol + dVol - eVol; %eVol volume out during venting 
+    vol = vol + dVol - eVol; %eVol volume out during venting
+    vol_array(t) = vol;
 end
 end
         

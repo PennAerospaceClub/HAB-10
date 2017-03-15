@@ -131,7 +131,7 @@ global balloonmass;
 payloadmass = handles.slider_payload.Value; 
 heliumUsed = handles.edit_helium.String;
 large_array = calc_alt(balloonmass,payloadmass,str2num(heliumUsed));
-altitude_array = large_array(:,1);
+altitude_array = large_array(:); % (changed mistake with rows)
 
 negVals = find(altitude_array == -1);
 
